@@ -141,7 +141,7 @@
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     async function run() {
-      await sleep(5000);
+      await sleep(3000);
 
       const toFade = spans.filter(s => s.dataset.keep === 'false');
       toFade.forEach((s, i) => {
