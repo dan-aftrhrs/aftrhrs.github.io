@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>notaBard — Team Onboarding</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=DM+Sans:wght@400;500;600&display=swap');
+:root{
+  --bg:#0E0E0E;
+  --surface:#1A1A1A;
+  --surface-hover:#222;
+  --border:#2E2E2E;
+  --border-light:#3A3A3A;
+  --text:#F0EDE6;
+  --text-secondary:#9A9590;
+  --text-tertiary:#6A655F;
+  --gold:#C9A84C;
+  --gold-light:#D4B86A;
+  --gold-dark:#A8882E;
+  --gold-bg:rgba(201,168,76,0.08);
+  --gold-bg-strong:rgba(201,168,76,0.15);
+  --success:#6AAF7B;
+  --success-bg:rgba(106,175,123,0.1);
+  --link:#8AB4D6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.header{text-align:center;padding:3rem 1.5rem 2rem;border-bottom:1px solid var(--border);background:var(--surface)}
+.header h1{font-family:'Source Serif 4',Georgia,serif;font-size:2rem;font-weight:600;color:var(--gold);margin-bottom:.25rem;letter-spacing:.02em}
+.header p{font-size:.88rem;color:var(--text-secondary);font-style:italic}
+.pbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;gap:12px}
+.ptrack{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.pfill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s;width:0%}
+.ptxt{font-size:.8rem;color:var(--text-secondary);font-weight:500;min-width:40px;text-align:right}
+.ctn{max-width:680px;margin:0 auto;padding:1.5rem}
+.rs{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem}
+.rs h2{font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:.25rem;color:var(--text)}
+.rs>p{font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem}
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.rb{border:1px solid var(--border);background:var(--surface);border-radius:8px;padding:10px 8px;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit;font-size:.82rem;color:var(--text-secondary)}
+.rb:hover{border-color:var(--gold-dark);color:var(--text)}
+.rb.active{border-color:var(--gold);background:var(--gold-bg-strong);color:var(--gold-light);font-weight:600}
+.rl{font-weight:500}
+.ni{display:flex;gap:8px;margin-bottom:1rem}
+.ni input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.9rem;outline:none;background:var(--bg);color:var(--text)}
+.ni input:focus{border-color:var(--gold)}
+.ni input::placeholder{color:var(--text-tertiary)}
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:.75rem;overflow:hidden}
+.sh{padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none}
+.sh:hover{background:var(--surface-hover)}
+.sn{width:26px;height:26px;border-radius:50%;background:var(--border);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;flex-shrink:0;transition:all .3s}
+.sec.done .sn{background:var(--gold);color:var(--bg)}
+.st{flex:1;font-weight:600;font-size:.92rem}
+.ss{font-size:.72rem;color:var(--text-tertiary)}
+.sec.done .ss{color:var(--gold)}
+.sc{color:var(--text-tertiary);font-size:.65rem;transition:transform .2s}
+.sec.open .sc{transform:rotate(90deg)}
+.sb{display:none;padding:0 1.25rem 1.25rem}
+.sec.open .sb{display:block}
+.step{padding:.75rem 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+.step:last-child{border-bottom:none}
+.step.rh{display:none}
+.ck{width:20px;height:20px;border:1.5px solid var(--border-light);border-radius:5px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:2px;background:transparent}
+.ck:hover{border-color:var(--gold)}
+.ck.on{background:var(--gold);border-color:var(--gold);color:var(--bg)}
+.ck.on::after{content:'\2713';font-size:12px;font-weight:700}
+.si{flex:1}
+.stt{font-weight:500;font-size:.88rem;margin-bottom:2px}
+.step.dn .stt{color:var(--text-tertiary);text-decoration:line-through}
+.sd{font-size:.8rem;color:var(--text-secondary);line-height:1.6}
+.sd a{color:var(--link);text-decoration:none;font-weight:500}
+.sd a:hover{text-decoration:underline}
+.sd code{background:var(--border);padding:1px 5px;border-radius:3px;font-size:.78rem;font-family:'SF Mono','Fira Code',monospace;color:var(--text)}
+.tag{display:inline-block;font-size:.68rem;padding:1px 6px;border-radius:3px;margin-left:6px;font-weight:500;vertical-align:middle;border:1px solid}
+.t-art{border-color:#7A5060;color:#C48A9A;background:rgba(196,138,154,.08)}
+.t-mus{border-color:#7A6530;color:#C9A84C;background:rgba(201,168,76,.08)}
+.t-cod{border-color:#3A6080;color:#8AB4D6;background:rgba(138,180,214,.08)}
+.t-sto{border-color:#6A5A80;color:#B0A0D0;background:rgba(176,160,208,.08)}
+.t-mec{border-color:#3A7060;color:#6AAF7B;background:rgba(106,175,123,.08)}
+.tip{background:var(--gold-bg);border-left:2px solid var(--gold-dark);padding:8px 12px;border-radius:0 6px 6px 0;margin-top:6px;font-size:.78rem;color:var(--gold-light);line-height:1.5}
+.tip strong{font-weight:600}
+.vl{display:inline-flex;align-items:center;gap:5px;background:transparent;border:1px solid var(--border-light);color:var(--text-secondary);padding:3px 10px;border-radius:5px;font-size:.76rem;font-weight:500;text-decoration:none;margin-top:6px;transition:all .15s}
+.vl:hover{border-color:var(--gold-dark);color:var(--gold-light);text-decoration:none}
+.cb{display:none;background:var(--gold-bg-strong);border:1px solid rgba(201,168,76,.25);border-radius:10px;padding:1.5rem;text-align:center;margin-bottom:1.5rem}
+.cb.show{display:block}
+.cb h2{font-family:'Source Serif 4',Georgia,serif;color:var(--gold);font-size:1.2rem;margin-bottom:.25rem}
+.cb p{color:var(--gold-light);font-size:.88rem}
+.footer{text-align:center;padding:2rem 1.5rem;color:var(--text-tertiary);font-size:.78rem;font-style:italic}
+</style>
+</head>
+<body>
+<div class="header"><h1>notaBard</h1><p>An interactive parable about keeping in step with the King's rhythm</p></div>
+<div class="pbar"><div class="ptrack"><div class="pfill" id="pf"></div></div><div class="ptxt" id="pt">0%</div></div>
+<div class="ctn">
+
+<div class="rs">
+<h2>Welcome to the team</h2>
+<p>Select your role so the guide shows the right steps for you.</p>
+<div class="ni"><input type="text" id="nm" placeholder="Your name"/></div>
+<div class="rg">
+<div class="rb" data-role="story" onclick="sr(this)"><div class="rl">Story</div></div>
+<div class="rb" data-role="mechanics" onclick="sr(this)"><div class="rl">Mechanics</div></div>
+<div class="rb" data-role="music" onclick="sr(this)"><div class="rl">Music</div></div>
+<div class="rb" data-role="art" onclick="sr(this)"><div class="rl">Art</div></div>
+<div class="rb" data-role="coding" onclick="sr(this)"><div class="rl">Coding</div></div>
+</div>
+</div>
+
+<div class="cb" id="cb"><h2>You're all set</h2><p>Welcome to the team. Keep in step with the King's rhythm.</p></div>
+
+<!-- S1: Everyone -->
+<div class="sec open" data-s="1">
+<div class="sh" onclick="ts(this)"><div class="sn">1</div><div class="st">Tools everyone needs</div><div class="ss"></div><div class="sc">&#9654;</div></div>
+<div class="sb">
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install Obsidian</div>
+<div class="sd">Download from <a href="https://obsidian.md" target="_blank">obsidian.md</a> and install it. This is where all our documentation, lore, design docs, and meeting notes live. Everyone uses it regardless of role.
+<a href="https://youtu.be/QgbLb6QCK88?si=SrF3Z08t57OJasnv" target="_blank" class="vl">Watch: Get started with Obsidian</a></div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Create a GitHub account</div>
+<div class="sd">Go to <a href="https://github.com" target="_blank">github.com</a> and sign up for a free account. Share your username with the code lead so they can invite you to the project.</div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install GitHub Desktop (or git CLI if you prefer)</div>
+<div class="sd">Download from <a href="https://desktop.github.com" target="_blank">desktop.github.com</a>. Install and sign in with your GitHub account.
+<div class="tip"><strong>Prefer the command line?</strong> If you already use git CLI, that works too. GitHub Desktop is just the beginner-friendly option.</div></div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install Git LFS</div>
+<div class="sd">Download from <a href="https://git-lfs.com" target="_blank">git-lfs.com</a> and install it. Open a terminal (search "Terminal" on Mac or "Command Prompt" on Windows) and type: <code>git lfs install</code>
+<div class="tip"><strong>Never used a terminal?</strong> Just open it, type those exact words, press Enter. You should see "Git LFS initialized". Close it. That's the only time you'll need it.</div></div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Join the Discord server</div>
+<div class="sd">Download <a href="https://discord.com" target="_blank">Discord</a> if you don't have it. Ask the team lead for the notaBard server invite link.</div></div></div>
+
+</div></div>
+
+<!-- S2: Role-specific -->
+<div class="sec" data-s="2">
+<div class="sh" onclick="ts(this)"><div class="sn">2</div><div class="st">Your role-specific tools</div><div class="ss"></div><div class="sc">&#9654;</div></div>
+<div class="sb">
+
+<!-- STORY -->
+<div class="step" data-r="story"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Get comfortable with Obsidian <span class="tag t-sto">Story</span></div>
+<div class="sd">Obsidian is your main tool. Start a note, write some lore, play around with it. Everything you create will eventually live here. Templates will be made once everything is ready.
+<a href="https://youtu.be/QgbLb6QCK88?si=SrF3Z08t57OJasnv" target="_blank" class="vl">Watch: Obsidian for beginners</a></div></div></div>
+
+<div class="step" data-r="story"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install Godot 4.5.2 <span class="tag t-sto">Story</span></div>
+<div class="sd">Download <strong>Godot 4.5.2 stable</strong> (standard version, not .NET) from <a href="https://godotengine.org/download/archive/" target="_blank">godotengine.org/download/archive</a>. You'll use this to work with Dialogic 2 — the visual dialogue editor where your writing becomes playable conversations.</div></div></div>
+
+<div class="step" data-r="story"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install Dialogic 2 plugin <span class="tag t-sto">Story</span></div>
+<div class="sd">In Godot, go to the <strong>AssetLib</strong> tab at the top. Search for <strong>Dialogic</strong>, download and install it. This is how you'll build the King's commission scenes, Elder dialogues, Carpenter conversations, and Ruse interactions — all in a visual editor, no code needed.
+<a href="https://docs.dialogic.pro/" target="_blank" class="vl">Read: Dialogic 2 documentation</a></div></div></div>
+
+<!-- MECHANICS -->
+<div class="step" data-r="mechanics"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install Godot 4.5.2 <span class="tag t-mec">Mechanics</span></div>
+<div class="sd">Download <strong>Godot 4.5.2 stable</strong> (standard version, not .NET) from <a href="https://godotengine.org/download/archive/" target="_blank">godotengine.org/download/archive</a>. Have a poke around and get familiar with the editor.
+<a href="https://youtu.be/-i1PJ2-JZbE?si=oNB5vmdpmBC-FHtv" target="_blank" class="vl">Watch: Getting started with Godot</a></div></div></div>
+
+<div class="step" data-r="mechanics"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install MetSys and LimboAI plugins <span class="tag t-mec">Mechanics</span></div>
+<div class="sd">In Godot, go to the <strong>AssetLib</strong> tab at the top. Search for <strong>Metroidvania System</strong> and <strong>LimboAI</strong>. Download and install both from the plugin tab.</div></div></div>
+
+<div class="step" data-r="mechanics"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Use Obsidian for design ideas <span class="tag t-mec">Mechanics</span></div>
+<div class="sd">Also worth having Obsidian set up to document your design ideas before you build them. Write down ability concepts, enemy patterns, rhythm system ideas.</div></div></div>
+
+<!-- MUSIC -->
+<div class="step" data-r="music"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install FMOD Studio <span class="tag t-mus">Music</span></div>
+<div class="sd">Go to <a href="https://www.fmod.com" target="_blank">fmod.com</a>, create a free account, and download FMOD Studio. It's free for indie projects. We'll be using it for all our in-game audio.
+<a href="https://youtu.be/7A1HMOsD2eU?si=xiPwoeWGjw5_B49y" target="_blank" class="vl">Watch: Getting started with FMOD</a></div></div></div>
+
+<div class="step" data-r="music"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Start exploring and jotting down ideas <span class="tag t-mus">Music</span></div>
+<div class="sd">If you've got ideas for the feel and mood of the soundtrack, jot them down somewhere. We'll get them into Obsidian soon. Think about the 80 BPM master tempo, regional feels, and how music should react to player alignment.</div></div></div>
+
+<!-- ART -->
+<div class="step" data-r="art"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Get familiar with Aseprite (or LibreSprite) <span class="tag t-art">Art</span></div>
+<div class="sd"><strong>Aseprite</strong> is our primary pixel art tool. It's not free but not expensive — <a href="https://www.aseprite.org" target="_blank">$19.99 from aseprite.org</a> or on Steam.<br><br>
+If you want to try a free version first, look at <a href="https://libresprite.github.io/" target="_blank">LibreSprite</a>. It looks and feels the same, and you're only missing some of the more advanced features.
+<a href="https://youtu.be/59Y6OTzNrhk?si=eTBPELrm4TpO45kF" target="_blank" class="vl">Watch: Getting started with Aseprite</a></div></div></div>
+
+<div class="step" data-r="art"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Start thinking about art direction <span class="tag t-art">Art</span></div>
+<div class="sd">If you want to get ahead, start thinking about the art direction and feel free to do some concept sketches. Once Obsidian is set up you'll have a space to document the art style too. References: Planet of Lana, Hollow Knight, Summerhouse, Eastward.</div></div></div>
+
+<!-- CODING -->
+<div class="step" data-r="coding"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Install Godot 4.5.2 <span class="tag t-cod">Coding</span></div>
+<div class="sd">Download <strong>Godot 4.5.2 stable</strong> (standard version, not .NET) from <a href="https://godotengine.org/download/archive/" target="_blank">godotengine.org/download/archive</a>.</div></div></div>
+
+<div class="step" data-r="coding"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Get to know GDScript <span class="tag t-cod">Coding</span></div>
+<div class="sd">GDScript is the programming language we use in Godot. It's similar to Python and very beginner-friendly.
+<a href="https://www.gdquest.com/news/2022/12/learn-gdscript-app/" target="_blank" class="vl">Start: Learn GDScript interactive app</a></div></div></div>
+
+<div class="step" data-r="coding"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Make sure GitHub Desktop (or git CLI) is ready <span class="tag t-cod">Coding</span></div>
+<div class="sd">Once the repo is up you'll get an invite and can clone it straight away. Make sure GitHub Desktop is installed and signed in from Section 1.</div></div></div>
+
+</div></div>
+
+<!-- S3: Get the project -->
+<div class="sec" data-s="3">
+<div class="sh" onclick="ts(this)"><div class="sn">3</div><div class="st">Get the project</div><div class="ss"></div><div class="sc">&#9654;</div></div>
+<div class="sb">
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Accept the GitHub invitation</div>
+<div class="sd">Check your email for an invitation to the <strong>notabard</strong> repository. Click the link to accept. If you haven't received it, share your GitHub username with the code lead.</div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Clone the project</div>
+<div class="sd">Open GitHub Desktop, click <strong>File then Clone Repository</strong>, find <strong>notabard</strong> in the list, choose where to save it, and click <strong>Clone</strong>.
+<div class="tip"><strong>Where to save it?</strong> Somewhere easy to find, like Documents. Avoid cloud-synced folders (iCloud, OneDrive, Google Drive) — they cause conflicts with Git.</div></div></div></div>
+
+<div class="step" data-r="mechanics coding story"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Open the project in Godot</div>
+<div class="sd">Open Godot 4.5.2, click <strong>Import</strong>, browse to the cloned folder, select <strong>project.godot</strong>, and click <strong>Import and Edit</strong>. Press <strong>F5</strong> to run the test scene and confirm everything works.</div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Open the docs vault in Obsidian</div>
+<div class="sd">Open Obsidian, click <strong>Open folder as vault</strong>, navigate to the cloned notabard folder, and select the <strong>docs</strong> folder. You should see the Dashboard with design pillars, team info, and milestone tasks.</div></div></div>
+
+</div></div>
+
+<!-- S4: Workflow -->
+<div class="sec" data-s="4">
+<div class="sh" onclick="ts(this)"><div class="sn">4</div><div class="st">Learn the daily workflow</div><div class="ss"></div><div class="sc">&#9654;</div></div>
+<div class="sb">
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Practice: Pull the latest changes</div>
+<div class="sd">Open GitHub Desktop and click <strong>Fetch origin</strong>. If there are changes, click <strong>Pull origin</strong>. Do this every time before you start working.</div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Practice: Make a change and push it</div>
+<div class="sd">In Obsidian, open the Dashboard and add your name to the Team table. Save. Go to GitHub Desktop — you'll see the change. Write "Added my name to the team list", click <strong>Commit to main</strong>, then <strong>Push origin</strong>.
+<div class="tip"><strong>You just made your first contribution.</strong> This pull, work, commit, push cycle is what you'll do every time.</div></div></div></div>
+
+<div class="step" data-r="all"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Try the Discord bots</div>
+<div class="sd">In the Discord server, try these commands:<br>
+<code>!tech What version of Godot are we using?</code><br>
+<code>!lore Who is the companion cat?</code><br>
+<code>!bothelp</code> for all commands</div></div></div>
+
+</div></div>
+
+<!-- S5: First task -->
+<div class="sec" data-s="5">
+<div class="sh" onclick="ts(this)"><div class="sn">5</div><div class="st">Your first task</div><div class="ss"></div><div class="sc">&#9654;</div></div>
+<div class="sb">
+
+<div class="step" data-r="story"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Write some lore in Obsidian <span class="tag t-sto">Story</span></div>
+<div class="sd">Start a note and write something — character voice samples for Eos, a scene description for the Royal City, lore about one of the Five Movements. Anything goes. Get comfortable writing here.</div></div></div>
+
+<div class="step" data-r="story"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Explore Dialogic 2 in Godot <span class="tag t-sto">Story</span></div>
+<div class="sd">Open Godot, find the Dialogic tab, and try creating a simple test conversation. Add a character, write a few lines, add a branching choice. This is how all the game's dialogue will be built.
+<a href="https://docs.dialogic.pro/" target="_blank" class="vl">Read: Dialogic 2 getting started</a></div></div></div>
+
+<div class="step" data-r="mechanics"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Explore MetSys and LimboAI <span class="tag t-mec">Mechanics</span></div>
+<div class="sd">Open the sample projects that come with MetSys and LimboAI. Play with them. Write design notes in Obsidian about how they could map to notaBard — room transitions, cat behavior, enemy patterns.</div></div></div>
+
+<div class="step" data-r="music"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Sketch a mood piece at 80 BPM <span class="tag t-mus">Music</span></div>
+<div class="sd">In FMOD Studio or your DAW, create a short mood piece at 80 BPM. Doesn't need to be final — just capture the feel. Think about how the Royal City should sound: regal, warm, steady quarter-note pulse.</div></div></div>
+
+<div class="step" data-r="art"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Do a concept sketch or style test <span class="tag t-art">Art</span></div>
+<div class="sd">Sketch some concepts for the art direction. Try a pixel art test piece — maybe Eos with his cello, or the companion cat. Reference the GDD's visual influences: Planet of Lana, Hollow Knight, Summerhouse, Eastward.</div></div></div>
+
+<div class="step" data-r="coding"><div class="ck" onclick="tc(this)"></div><div class="si">
+<div class="stt">Work through GDScript basics <span class="tag t-cod">Coding</span></div>
+<div class="sd">Work through the GDQuest tutorial. Focus on understanding scenes, nodes, signals, and basic scripting. Once the repo is up you can clone it and start experimenting.
+<a href="https://www.gdquest.com/news/2022/12/learn-gdscript-app/" target="_blank" class="vl">Start: Learn GDScript interactive app</a></div></div></div>
+
+</div></div>
+
+</div>
+<div class="footer">Keep in step with the King's rhythm.</div>
+
+<script>
+let R=null;const K='notabard_onboard';
+function sr(b){document.querySelectorAll('.rb').forEach(x=>x.classList.remove('active'));b.classList.add('active');R=b.dataset.role;fs();sv();up()}
+function fs(){document.querySelectorAll('.step').forEach(s=>{const r=s.dataset.r;s.classList.toggle('rh',r!=='all'&&R&&!r.split(' ').includes(R))})}
+function tc(c){c.classList.toggle('on');c.closest('.step').classList.toggle('dn',c.classList.contains('on'));us(c.closest('.sec'));up();sv()}
+function ts(h){h.closest('.sec').classList.toggle('open')}
+function us(sec){const v=sec.querySelectorAll('.step:not(.rh)'),c=sec.querySelectorAll('.step:not(.rh) .ck.on'),e=sec.querySelector('.ss');if(!v.length){e.textContent='';return}if(c.length===v.length){e.textContent='Complete';sec.classList.add('done')}else{e.textContent=c.length+'/'+v.length;sec.classList.remove('done')}}
+function up(){const v=document.querySelectorAll('.step:not(.rh)'),c=document.querySelectorAll('.step:not(.rh) .ck.on'),p=Math.round(c.length/(v.length||1)*100);document.getElementById('pf').style.width=p+'%';document.getElementById('pt').textContent=p+'%';document.getElementById('cb').classList.toggle('show',p===100)}
+function sv(){const ch={};document.querySelectorAll('.step').forEach((s,i)=>{if(s.querySelector('.ck.on'))ch[i]=true});localStorage.setItem(K,JSON.stringify({role:R,name:document.getElementById('nm').value,ch}))}
+function ld(){try{const s=JSON.parse(localStorage.getItem(K));if(!s)return;if(s.name)document.getElementById('nm').value=s.name;if(s.role){const b=document.querySelector('.rb[data-role="'+s.role+'"]');if(b)sr(b)}if(s.ch)document.querySelectorAll('.step').forEach((step,i)=>{if(s.ch[i]){const c=step.querySelector('.ck');if(c){c.classList.add('on');step.classList.add('dn')}}});document.querySelectorAll('.sec').forEach(s=>us(s));up()}catch(e){}}
+document.getElementById('nm').addEventListener('input',sv);ld();fs();document.querySelectorAll('.sec').forEach(s=>us(s));up();
+</script>
+</body>
+</html>
